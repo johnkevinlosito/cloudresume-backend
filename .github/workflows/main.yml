@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [2.7, 3.5, 3.6, 3.7, 3.8]
+        python-version: [3.8]
     steps:
     - name: Checkout
       uses: actions/checkout@v1
@@ -22,8 +22,6 @@ jobs:
     
     - name: Install SAM cli
       run: |
-        pip3 install wheel --upgrade
-        pip3 install setuptools --upgrade
         pip3 install aws-sam-cli --upgrade
 
         echo "::add-path::$HOME/.local/bin"
