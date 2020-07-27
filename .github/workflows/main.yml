@@ -23,4 +23,4 @@ jobs:
       run: sam build
 
     - name: Deploy SAM
-      run: sam deploy --stack-name visitor-counter-stack --region ap-southeast-1
+      run: sam deploy --stack-name visitor-counter-stack --region ap-southeast-1 --capabilities CAPABILITY_IAM
