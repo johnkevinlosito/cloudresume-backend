@@ -11,6 +11,14 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
+    
+    - name: Install SAM cli
+      run: |
+        pip3 install wheel --upgrade
+        pip3 install setuptools --upgrade
+        pip3 install aws-sam-cli --upgrade
+
+        echo "::add-path::$HOME/.local/bin"
 
     - name: Configure AWS Credentials
       uses: aws-actions/configure-aws-credentials@v1
