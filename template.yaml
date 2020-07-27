@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  cloudresume-backend
+
+  SAM Template for cloudresume-backend
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  VisitorCounterTable:
+    Type: AWS::Serverless::SimpleTable # if you want to define a more complex table, use AWS::DynamoDB::Table
+    Properties:
+      TableName: visitorCounter
+      PrimaryKey:
+        Name: siteUrl
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  VisitorCounterFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      FunctionName: visitorCounter
+      Description: Function to update and return the number of visitors
+      Role: arn:aws:iam::766629389114:role/Lambda2VisitorCounterRole
+      CodeUri: visitor_count/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Environment:
+        Variables: 
+          DynamoDBTable: !Ref VisitorCounterTable
+      Events:
+        VisitorCountAPI:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            Path: /getcount
+            Method: get
+
+Outputs:
+  # ServerlessRestApi is an implicit API created out of Events key under Serverless::Function
+  # Find out more about other implicit resources you can reference within SAM
+  # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
+  VisitorCountAPI:
+    Description: "API Gateway endpoint URL for Prod stage for Visitor counter function"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/getcount/"
+  VisitorCounterFunction:
+    Description: "Visitor Counter Lambda Function ARN"
+    Value: !GetAtt VisitorCounterFunction.Arn
