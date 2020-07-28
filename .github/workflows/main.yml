@@ -37,9 +37,9 @@ jobs:
         pip install pytest
         pip install boto3
         python -m pytest tests/ -v
-        
+
     - name: Build SAM
       run: sam build
 
     - name: Deploy SAM
-      run: sam deploy --stack-name visitor-counter-stack --region ap-southeast-1 --capabilities CAPABILITY_IAM --s3-bucket sam-cli-bucket-prod-ver --s3-prefix visitor-counter-stack
+      run: sam deploy --stack-name visitor-counter-stack --region ap-southeast-1 --capabilities CAPABILITY_IAM --s3-bucket sam-cli-bucket-prod-ver --s3-prefix visitor-counter-stack --no-fail-on-empty-changeset
