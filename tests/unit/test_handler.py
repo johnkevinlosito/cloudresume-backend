@@ -6,7 +6,7 @@ from visitor_count import app
 import os
 
 os.environ['AWS_DEFAULT_REGION'] = 'ap-southeast-1'
-os.environ['DynamoDBTable'] = 'visitorCounter'
+os.environ['DynamoDBTable'] = 'visitor-counter-stack-VisitorCounterTable-1OOMX4T554CD4'
 
 @pytest.fixture()
 def apigw_event():
