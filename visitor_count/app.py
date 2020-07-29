@@ -2,8 +2,10 @@ import json
 import boto3
 import os
 
+db = boto3.resource('dynamodb')
+
 def lambda_handler(event, context):
-    db = boto3.resource('dynamodb')
+    
     table = db.Table(os.environ['DynamoDBTable'])
     siteUrl =  event['queryStringParameters']['siteUrl'] 
     # siteUrl = 'cloudresume.johnkevinlosito.com'

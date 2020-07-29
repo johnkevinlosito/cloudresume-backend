@@ -14,13 +14,13 @@ Resources:
   VisitorCounterTable:
     Type: AWS::Serverless::SimpleTable # if you want to define a more complex table, use AWS::DynamoDB::Table
     Properties:
-      TableName: visitorCounter
+      # TableName: visitorCounter
       PrimaryKey:
         Name: siteUrl
         Type: String
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+      # ProvisionedThroughput:
+      #   ReadCapacityUnits: 5
+      #   WriteCapacityUnits: 5
   VisitorCounterFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
@@ -50,3 +50,6 @@ Outputs:
   VisitorCounterFunction:
     Description: "Visitor Counter Lambda Function ARN"
     Value: !GetAtt VisitorCounterFunction.Arn
+  VisitorCounterTable:
+    Description: "DynamoDB Table Name"
+    Value: !Ref VisitorCounterTable
