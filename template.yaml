@@ -1,8 +1,6 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  cloudresume-backend
-
   SAM Template for cloudresume-backend
 
 # More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
@@ -26,10 +24,30 @@ Resources:
     Properties:
       FunctionName: visitorCounter
       Description: Function to update and return the number of visitors
-      Role: arn:aws:iam::766629389114:role/Lambda2VisitorCounterRole
+      # Role: arn:aws:iam::766629389114:role/Lambda2VisitorCounterRole
       CodeUri: visitor_count/
       Handler: app.lambda_handler
       Runtime: python3.8
+      Policies:
+        - AWSLambdaExecute # Managed Policy
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+            - Sid: LambdaInvoke
+              Effect: Allow
+              Action:
+                - lambda:InvokeFunction
+              Resource: !GetAtt VisitorCounterFunction.Arn
+            - Sid: ForDynamoDB
+              Effect: Allow
+              Action:
+                - dynamodb:BatchGetItem
+                - dynamodb:BatchWriteItem
+                - dynamodb:PutItem
+                - dynamodb:GetItem
+                - dynamodb:Scan
+                - dynamodb:Query
+                - dynamodb:UpdateItem
+              Resource: !Sub arn:${AWS::Partition}:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${tableName}
       Environment:
         Variables: 
           DynamoDBTable: !Ref VisitorCounterTable
